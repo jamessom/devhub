@@ -1,0 +1,30 @@
+version: "3"
+
+services:
+  devhub_db:
+    container_name: devhub_db
+    image: postgres:12-alpine
+    ports: [ "5432:5432" ]
+    networks: [ devhub_net ]
+    env_file: [ ".env" ]
+    logging:
+      driver: "none"
+
+  devhub_app:
+    image: devhub_app:latest
+    container_name: devhub_app
+    build: .
+    command: sh scripts/start
+    volumes: [ ".:/devhub_app", ".gems_devhub:/.gems_devhub" ]
+    ports: [ "3030:3000" ]
+    networks: [ devhub_net ]
+    links: [ devhub_db ]
+    depends_on: [ devhub_db ]
+    env_file: [ ".env" ]
+
+volumes:
+  .gems_devhub:
+
+networks:
+  devhub_net:
+    driver: bridge
