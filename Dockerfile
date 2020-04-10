@@ -1,7 +1,7 @@
 FROM ruby:2.7-alpine
 
 ENV APP_HOME /devhub_app
-ENV BUNDLE_PATH ${APP_HOME}/.gems_devhub
+ENV BUNDLE_PATH ${APP_HOME}/.app_data/gems
 
 RUN apk update && apk upgrade && apk --no-cache add build-base nodejs postgresql-dev git tzdata && rm -rf /var/cache/apk/*
 

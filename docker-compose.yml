@@ -4,6 +4,7 @@ services:
   devhub_db:
     container_name: devhub_db
     image: postgres:12-alpine
+    volumes: [ ".app_data/postgres/data:/var/lib/postgresql/data" ]
     ports: [ "5432:5432" ]
     networks: [ devhub_net ]
     env_file: [ ".env" ]
@@ -15,7 +16,7 @@ services:
     container_name: devhub_app
     build: .
     command: sh scripts/start
-    volumes: [ ".:/devhub_app", ".gems_devhub:/.gems_devhub" ]
+    volumes: [ ".:/devhub_app", ".app_data/gems:/.app_data/gems" ]
     ports: [ "3030:3000" ]
     networks: [ devhub_net ]
     links: [ devhub_db ]
@@ -23,7 +24,7 @@ services:
     env_file: [ ".env" ]
 
 volumes:
-  .gems_devhub:
+  .app_data:
 
 networks:
   devhub_net:
